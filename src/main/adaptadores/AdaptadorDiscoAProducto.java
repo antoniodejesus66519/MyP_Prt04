@@ -1,7 +1,8 @@
-package main.adaptadores;
+package adaptadores;
 
-import main.rockBuster.Producto;
-import main.mixdown.Disco;
+import rockBuster.Producto;
+import mixdown.Disco;
+import excepciones.SinProductoExcepcion;
 
 /**
  * Clase AdaptadorDiscoAProducto que implementa la interfaz {@link Producto} y adapta un objeto de tipo {@link Disco} a un objeto de tipo Producto.
@@ -23,43 +24,53 @@ public class AdaptadorDiscoAProducto implements Producto{
         this.discoAdaptable = discoAdaptable;
     }
 
-    @Override String nombre(){
+    @Override 
+    public String nombre(){
         return discoAdaptable.nombre();
     }
 
-    @Override String director(){
+    @Override 
+    public String director(){
         return discoAdaptable.artista();
     }
 
-    @Override int duracion(){
+    @Override 
+    public int duracion(){
         return discoAdaptable.duracion();
     }
 
-    @Override String genero(){
+    @Override 
+    public String genero(){
         return discoAdaptable.genero();
     }
 
-    @Override String sipnosis(){
+    @Override 
+    public String sipnosis(){
         return "No hay sipnosis disponible para este producto.";
     }
 
-    @Override double precio(){
+    @Override 
+    public double precio(){
         return discoAdaptable.precio();
     }
 
-    @Override int obtenerId(){
+    @Override 
+    public int obtenerId(){
         return discoAdaptable.obtenerId();
     }
 
-    @Override int disponibles(){
+    @Override 
+    public int disponibles(){
         return discoAdaptable.disponibles();
     }
 
-    @Override int hayDisponibles(){
+    @Override 
+    public boolean hayDisponibles(){
         return discoAdaptable.hayDisponibles();
     }
 
-    @Override void rentar() throws SinProductosExcepcion{
+    @Override 
+    public void rentar() throws SinProductosExcepcion{
         try{
             discoAdaptable.vender();
         }catch(Sin DiscosExcepcion e){
@@ -67,11 +78,13 @@ public class AdaptadorDiscoAProducto implements Producto{
         }
     }
 
-    @Override void devolucion(){
+    @Override 
+    void devolucion(){
         discoAdaptable.agregarCopia();
     }
 
-    @Override String presentacion(){
+    @Override 
+    String presentacion(){
         return discoAdaptable.presentacion();
     }
 }

@@ -1,4 +1,7 @@
-package main.mixdown
+package mixdown;
+
+import excepciones.SinDiscosExcepcion;
+
 
 /**
  * Clase que representa un disco(Album) que contiene una colección de canciones de

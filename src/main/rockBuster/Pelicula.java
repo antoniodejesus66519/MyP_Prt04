@@ -1,5 +1,6 @@
 package rockBuster;
 
+import excepciones.SinProductoExcepcion;
 
 public class Pelicula implements Producto {
 
@@ -21,53 +22,71 @@ public class Pelicula implements Producto {
         this.disponibilidad = disponibilidad;
     }
 
+    
     public String nombre() {
         return this.nombre;
     }
 
+    
     public String director() {
         return this.director;
     }
 
+    
     public int duracion() {
         return this.duracion;
     }
 
+    
     public String genero() {
         return this.genero;
     }
 
+    
     public String sipnosis() {
         return this.sipnosis;
     }
 
+    
     public double precio() {
         return this.renta;
     }
 
-    public String presentacion(){
-
+    
+    public String presentacion() {
+        return "=== Película: " + this.nombre + " ===" +
+               "\nDirector: " + this.director +
+               "\nGénero: " + this.genero +
+               "\nDuración: " + this.duracion + " min" +
+               "\nPrecio de renta: $" + this.renta +
+               "\nDisponibles: " + this.disponibilidad +
+               "\nSinopsis: " + this.sipnosis;
     }
 
-    public void rentar(){
-
+    
+    public void rentar() throws SinProductoExcepcion {
+        if (!hayDisponibles()) {
+            throw new SinProductoExcepcion("No hay copias disponibles de la película: " + this.nombre);
+        }
+        this.disponibilidad--;
     }
 
-    public boolean hayDisponibles(){
-
+    
+    public boolean hayDisponibles() {
+        if (this.disponibilidad > 0) {
+            return true;
+        } else {
+            return false;
+        }
     }
 
-    public void devolucion(){
-
+    
+    public void devolucion() {
+        this.disponibilidad++;
     }
 
-    public int disponibles(){
-
+    
+    public int disponibles() {
+        return this.disponibilidad;
     }
-
-    public int obtenerId(){
-
-    }
-
-
 }

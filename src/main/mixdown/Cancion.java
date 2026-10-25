@@ -1,4 +1,4 @@
-package main.mixdown;
+package mixdown;
 /**
  * Clase que representa un objeto Cancion con su título, artista y duración.
  * Cancion es una clase sencilla que solo almacena información sobre una canción

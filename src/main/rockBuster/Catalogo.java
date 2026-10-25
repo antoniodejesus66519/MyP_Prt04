@@ -1,6 +1,7 @@
-package main.rockBuster;
+package rockBuster;
 
 import java.util.ArrayList;
+import excepciones.NoExisteProductoExcepcion;
 
 /**
  * Clase Catalogo que representa un catálogo de productos en la tienda rockBuster.
