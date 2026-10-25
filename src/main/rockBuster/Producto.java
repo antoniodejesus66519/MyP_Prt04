@@ -1,4 +1,4 @@
-package rockBuster;
+package main.rockBuster;
 
 public interface Producto {
     //NOmbre de la saga o pelicula
@@ -15,7 +15,7 @@ public interface Producto {
     double precio();
     //Presentacion de la pelicula o saga (creo)
     String presentacion();
-    //Rentar la pelicula o safa
+    //Rentar la pelicula o saga
     void rentar();
     //Si esta disponible para rentar
     boolean hayDisponibles();
