@@ -14,7 +14,7 @@ public interface Producto {
     //Precio de la pelicula o saga
     double precio();
     //Presentacion de la pelicula o saga (creo)
-    String presentación();
+    String presentacion();
     //Rentar la pelicula o safa
     void rentar();
     //Si esta disponible para rentar
