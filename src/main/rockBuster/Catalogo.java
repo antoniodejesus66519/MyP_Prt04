@@ -46,16 +46,15 @@ public class Catalogo {
      * @param id El identificador único del producto a buscar en el catálogo.
      * @return El objeto con el identificador único especificado.
      */
-    public Producto obtenerProducto(int id) throws NoExisteProductoExcepcion{
-        int indice = numeroSeleccion - 1; 
-        
-        if (indice >= 0 && indice < productos.size()) {
-            return productos.get(indice);
-        }
-        
-        throw new NoExisteProductoExcepcion("No existe un producto con el identificador actual.");
+public Producto obtenerProducto(int id) throws NoExisteProductoExcepcion {
+    int indice = id - 1;
+
+    if (indice >= 0 && indice < productos.size()) {
+        return productos.get(indice);
     }
 
+    throw new NoExisteProductoExcepcion("No existe un producto con el identificador actual.");
+}
     /**
      * Filtra los productos del catálogo según un criterio definido por el usuario.
      * @param filtro El filtro a aplicar sobre los productos.
