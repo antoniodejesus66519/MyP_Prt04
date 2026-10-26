@@ -1,7 +1,11 @@
-package rockBuster;
 
 import java.util.ArrayList;
 import java.util.Scanner;
+
+import rockBuster.Catalogo;
+import rockBuster.Pelicula;
+import rockBuster.Producto;
+import rockBuster.Saga;
 
 import adaptadores.AdaptadorDiscoAProducto;
 import excepciones.NoExisteProductoExcepcion;
@@ -13,12 +17,11 @@ import mixdown.Disco;
 /**
  * Clase principal del sistema RockBuster.
  *
- * Permite consultar el catalogo completo de productos,
- * filtrar productos por genero y precio maximo,
- * y consultar la informacion detallada de un producto.
+ * Permite consultar un catalogo de peliculas, sagas
+ * y discos musicales, filtrar por genero o precio
+ * maximo y consultar los detalles de un producto.
  *
- * El sistema utiliza los patrones de diseno
- * Composite y Adapter.
+ * Utiliza los patrones Composite y Adapter.
  */
 public class Main {
 
@@ -26,9 +29,9 @@ public class Main {
     private Scanner scanner;
 
     /**
-     * Metodo principal que inicia la ejecucion.
+     * Punto de entrada del programa.
      *
-     * @param args Argumentos de la linea de comandos.
+     * @param args Argumentos de linea de comandos.
      */
     public static void main(String[] args) {
         Main programa = new Main();
@@ -36,36 +39,15 @@ public class Main {
     }
 
     /**
-     * Inicializa el catalogo, registra los productos
-     * y ejecuta el menu principal.
+     * Inicializa el sistema, agrega los productos
+     * al catalogo y ejecuta el menu principal.
      */
-    public void iniciar() {
+    private void iniciar() {
 
         catalogo = new Catalogo();
         scanner = new Scanner(System.in);
 
-        cargarProductos();
-
-        int opcion;
-
-        do {
-            mostrarMenu();
-            opcion = leerEntero();
-            procesarOpcion(opcion);
-
-        } while (opcion != 0);
-
-        scanner.close();
-    }
-
-    /**
-     * Crea las peliculas, sagas y discos que
-     * forman parte del catalogo de RockBuster.
-     *
-     * Todos los productos se registran en
-     * una unica estructura de datos.
-     */
-    private void cargarProductos() {
+        // Creacion de peliculas individuales.
 
         Pelicula episodioI = new Pelicula(
             "Star Wars Episodio I: La Amenaza Fantasma",
@@ -137,10 +119,8 @@ public class Main {
             4
         );
 
-        /*
-         * Patron Composite:
-         * Una saga contiene varias peliculas.
-         */
+        // Patron Composite: saga con peliculas.
+
         Saga precuelas = new Saga(
             "Saga: Trilogia de Precuelas",
             "George Lucas",
@@ -165,10 +145,8 @@ public class Main {
         original.agregar(episodioV);
         original.agregar(episodioVI);
 
-        /*
-         * Composite anidado:
-         * Una saga contiene otras sagas y peliculas.
-         */
+        // Composite anidado: saga que contiene otras sagas.
+
         Saga coleccionStarWars = new Saga(
             "Coleccion Star Wars",
             "Varios directores",
@@ -181,10 +159,8 @@ public class Main {
         coleccionStarWars.agregar(original);
         coleccionStarWars.agregar(rogueOne);
 
-        /*
-         * Patron Adapter:
-         * Un Disco se adapta a la interfaz Producto.
-         */
+        // Patron Adapter: disco convertido a Producto.
+
         Cancion[] canciones = {
             new Cancion(
                 "Come Together",
@@ -216,10 +192,8 @@ public class Main {
         AdaptadorDiscoAProducto discoAdaptado =
             new AdaptadorDiscoAProducto(disco);
 
-        /*
-         * Registro de todos los productos
-         * en el catalogo unico.
-         */
+        // Registro de productos en el catalogo unico.
+
         catalogo.agregarProducto(episodioI);
         catalogo.agregarProducto(episodioII);
         catalogo.agregarProducto(episodioIII);
@@ -231,12 +205,33 @@ public class Main {
         catalogo.agregarProducto(original);
         catalogo.agregarProducto(coleccionStarWars);
         catalogo.agregarProducto(discoAdaptado);
+
+        // Ejecucion del menu principal.
+
+        int opcion;
+
+        do {
+            mostrarMenu();
+
+            try {
+                opcion = Integer.parseInt(
+                    scanner.nextLine().trim()
+                );
+            } catch (NumberFormatException e) {
+                opcion = -1;
+            }
+
+            procesarOpcion(opcion);
+
+        } while (opcion != 0);
+
+        scanner.close();
     }
 
     /**
-     * Muestra el menu principal del programa.
+     * Muestra las opciones disponibles del sistema.
      */
-    public void mostrarMenu() {
+    private void mostrarMenu() {
 
         System.out.println();
         System.out.println("========================================");
@@ -251,40 +246,41 @@ public class Main {
     }
 
     /**
-     * Ejecuta la opcion seleccionada por el usuario.
+     * Procesa la opcion elegida por el usuario.
      *
-     * @param opcion Numero de opcion del menu.
+     * Permite mostrar productos, aplicar filtros
+     * y consultar los detalles de un producto.
+     *
+     * @param opcion Opcion seleccionada del menu.
      */
-    public void procesarOpcion(int opcion) {
+    private void procesarOpcion(int opcion) {
+
+        ArrayList<Producto> productosFiltrados = null;
 
         switch (opcion) {
 
             case 1:
+                System.out.println();
                 System.out.println(
                     catalogo.mostrarCatalogo()
                 );
-
-                seleccionarProducto(null);
                 break;
 
             case 2:
-                System.out.print(
-                    "Ingresa el genero: "
-                );
+                System.out.print("Ingresa el genero: ");
 
                 String genero = scanner.nextLine();
 
                 FiltroGenero filtroGenero =
                     new FiltroGenero(genero);
 
-                ArrayList<Producto> porGenero =
+                productosFiltrados =
                     catalogo.filtrar(filtroGenero);
 
+                System.out.println();
                 System.out.println(
-                    catalogo.mostrarFiltrado(porGenero)
+                    catalogo.mostrarFiltrado(productosFiltrados)
                 );
-
-                seleccionarProducto(porGenero);
                 break;
 
             case 3:
@@ -292,63 +288,83 @@ public class Main {
                     "Ingresa el precio maximo: "
                 );
 
-                double precio = leerDouble();
+                double precio;
 
-                if (precio < 0) {
-                    System.out.println(
-                        "El precio no puede ser negativo."
+                try {
+                    precio = Double.parseDouble(
+                        scanner.nextLine().trim()
                     );
-                    break;
+                } catch (NumberFormatException e) {
+                    System.out.println(
+                        "Error: Debes ingresar un precio valido."
+                    );
+                    return;
+                }
+
+                if (!Double.isFinite(precio) || precio < 0) {
+                    System.out.println(
+                        "Error: El precio debe ser un numero finito no negativo."
+                    );
+                    return;
                 }
 
                 FiltroPrecioMaximo filtroPrecio =
                     new FiltroPrecioMaximo(precio);
 
-                ArrayList<Producto> porPrecio =
+                productosFiltrados =
                     catalogo.filtrar(filtroPrecio);
 
+                System.out.println();
                 System.out.println(
-                    catalogo.mostrarFiltrado(porPrecio)
+                    catalogo.mostrarFiltrado(productosFiltrados)
                 );
-
-                seleccionarProducto(porPrecio);
                 break;
 
             case 0:
                 System.out.println(
                     "Gracias por utilizar RockBuster."
                 );
-                break;
+                return;
 
             default:
                 System.out.println(
                     "Opcion no valida. Intenta nuevamente."
                 );
-                break;
+                return;
         }
-    }
 
-    /**
-     * Permite seleccionar un producto del catalogo
-     * completo o de una lista de productos filtrados.
-     *
-     * @param filtrados Lista de productos filtrados.
-     *                  Si es null, utiliza el catalogo completo.
-     */
-    private void seleccionarProducto(
-        ArrayList<Producto> filtrados
-    ) {
+        // Seleccion de un producto para consultar detalles.
+
+        if (productosFiltrados != null &&
+            productosFiltrados.isEmpty()) {
+
+            System.out.println(
+                "No se encontraron productos con ese criterio."
+            );
+            return;
+        }
 
         System.out.println();
         System.out.println(
-            "Ingresa el numero del producto para consultar sus detalles."
+            "Ingresa el numero del producto para ver sus detalles."
         );
         System.out.println(
             "Ingresa 0 para regresar al menu."
         );
         System.out.print("Seleccion: ");
 
-        int seleccion = leerEntero();
+        int seleccion;
+
+        try {
+            seleccion = Integer.parseInt(
+                scanner.nextLine().trim()
+            );
+        } catch (NumberFormatException e) {
+            System.out.println(
+                "Error: Debes ingresar un numero entero."
+            );
+            return;
+        }
 
         if (seleccion == 0) {
             return;
@@ -357,29 +373,33 @@ public class Main {
         try {
             Producto producto;
 
-            if (filtrados == null) {
+            if (productosFiltrados == null) {
 
-                producto =
-                    catalogo.obtenerProducto(seleccion);
+                // Seleccion desde el catalogo completo.
+
+                producto = catalogo.obtenerProducto(seleccion);
 
             } else {
 
+                // Seleccion desde los resultados filtrados.
+
                 if (seleccion < 1 ||
-                    seleccion > filtrados.size()) {
+                    seleccion > productosFiltrados.size()) {
 
                     throw new NoExisteProductoExcepcion(
                         "No existe un producto con ese numero."
                     );
                 }
 
-                producto = filtrados.get(seleccion - 1);
+                producto = productosFiltrados.get(
+                    seleccion - 1
+                );
             }
 
             System.out.println();
             System.out.println(
                 "===== INFORMACION DEL PRODUCTO ====="
             );
-
             System.out.println(
                 producto.presentacion()
             );
@@ -389,50 +409,6 @@ public class Main {
             System.out.println(
                 "Error: " + e.getMessage()
             );
-        }
-    }
-
-    /**
-     * Lee un numero entero ingresado por el usuario.
-     *
-     * @return Numero entero o -1 si la entrada es invalida.
-     */
-    private int leerEntero() {
-
-        try {
-            return Integer.parseInt(
-                scanner.nextLine().trim()
-            );
-
-        } catch (NumberFormatException e) {
-
-            System.out.println(
-                "Error: Debes ingresar un numero entero."
-            );
-
-            return -1;
-        }
-    }
-
-    /**
-     * Lee un numero decimal ingresado por el usuario.
-     *
-     * @return Numero decimal o -1 si la entrada es invalida.
-     */
-    private double leerDouble() {
-
-        try {
-            return Double.parseDouble(
-                scanner.nextLine().trim()
-            );
-
-        } catch (NumberFormatException e) {
-
-            System.out.println(
-                "Error: Debes ingresar un precio valido."
-            );
-
-            return -1;
         }
     }
 }
