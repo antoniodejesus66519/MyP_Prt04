@@ -22,37 +22,37 @@ public class Pelicula implements Producto {
         this.disponibilidad = disponibilidad;
     }
 
-    
+    @Override
     public String nombre() {
         return this.nombre;
     }
 
-    
+    @Override
     public String director() {
         return this.director;
     }
 
-    
+    @Override
     public int duracion() {
         return this.duracion;
     }
 
-    
+    @Override
     public String genero() {
         return this.genero;
     }
 
-    
+    @Override
     public String sipnosis() {
         return this.sipnosis;
     }
 
-    
+    @Override
     public double precio() {
         return this.renta;
     }
 
-    
+    @Override
     public String presentacion() {
         return "=== Película: " + this.nombre + " ===" +
                "\nDirector: " + this.director +
@@ -63,7 +63,7 @@ public class Pelicula implements Producto {
                "\nSinopsis: " + this.sipnosis;
     }
 
-    
+    @Override
     public void rentar() throws SinProductoExcepcion {
         if (!hayDisponibles()) {
             throw new SinProductoExcepcion("No hay copias disponibles de la película: " + this.nombre);
@@ -71,7 +71,7 @@ public class Pelicula implements Producto {
         this.disponibilidad--;
     }
 
-    
+    @Override
     public boolean hayDisponibles() {
         if (this.disponibilidad > 0) {
             return true;
@@ -80,12 +80,12 @@ public class Pelicula implements Producto {
         }
     }
 
-    
+    @Override
     public void devolucion() {
         this.disponibilidad++;
     }
 
-    
+    @Override
     public int disponibles() {
         return this.disponibilidad;
     }
