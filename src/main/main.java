@@ -1,5 +1,3 @@
-Ubicación: src/main/rockBuster/Main.java
-
 package rockBuster;
 
 import java.util.ArrayList;
