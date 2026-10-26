@@ -1,14 +1,16 @@
-package rockBuster;
-
-import java.util.ArrayList;
-import java.util.Scanner;
 
 import adaptadores.AdaptadorDiscoAProducto;
 import excepciones.NoExisteProductoExcepcion;
 import filtro.FiltroGenero;
 import filtro.FiltroPrecioMaximo;
+import java.util.ArrayList;
+import java.util.Scanner;
 import mixdown.Cancion;
 import mixdown.Disco;
+import rockBuster.Catalogo;
+import rockBuster.Pelicula;
+import rockBuster.Producto;
+import rockBuster.Saga;
 
 /**
  * Clase principal del sistema RockBuster.
