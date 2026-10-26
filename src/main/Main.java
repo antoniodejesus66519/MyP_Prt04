@@ -1,4 +1,3 @@
-
 import adaptadores.AdaptadorDiscoAProducto;
 import excepciones.NoExisteProductoExcepcion;
 import filtro.FiltroGenero;
@@ -269,38 +268,40 @@ public class Main {
                 seleccionarProducto(null);
                 break;
 
-               case 2:
-    System.out.println();
-    System.out.println("Generos disponibles:");
-    System.out.println("1. Ciencia ficcion");
-    System.out.println("2. Rock");
-    System.out.println();
+            case 2:
+                System.out.println();
+                System.out.println("Generos disponibles:");
+                System.out.println("1. Ciencia ficcion");
+                System.out.println("2. Rock");
+                System.out.println();
 
-    System.out.print("Ingresa el genero: ");
-    String genero = scanner.nextLine().trim();
+                System.out.print("Ingresa el genero: ");
+                String genero = scanner.nextLine().trim();
 
-    if (genero.equalsIgnoreCase("Ciencia ficcion")) {
-        genero = "Ciencia ficcion";
-    } else if (genero.equalsIgnoreCase("Rock")) {
-        genero = "Rock";
-    } else {
-        System.out.println(
-            "El genero ingresado no existe en el catalogo."
-        );
-        return;
-    }
+                if (genero.equalsIgnoreCase("Ciencia ficcion")) {
+                    genero = "Ciencia ficcion";
+                } else if (genero.equalsIgnoreCase("Rock")) {
+                    genero = "Rock";
+                } else {
+                    System.out.println(
+                        "El genero ingresado no existe en el catalogo."
+                    );
+                    break;
+                }
 
-    FiltroGenero filtroGenero =
-        new FiltroGenero(genero);
+                FiltroGenero filtroGenero =
+                    new FiltroGenero(genero);
 
-    productosFiltrados =
-        catalogo.filtrar(filtroGenero);
+                ArrayList<Producto> porGenero =
+                    catalogo.filtrar(filtroGenero);
 
-    System.out.println();
-    System.out.println(
-        catalogo.mostrarFiltrado(productosFiltrados)
-    );
-    break; 
+                System.out.println();
+                System.out.println(
+                    catalogo.mostrarFiltrado(porGenero)
+                );
+
+                seleccionarProducto(porGenero);
+                break;
 
             case 3:
                 System.out.print(
@@ -309,9 +310,9 @@ public class Main {
 
                 double precio = leerDouble();
 
-                if (precio < 0) {
+                if (!Double.isFinite(precio) || precio < 0) {
                     System.out.println(
-                        "El precio no puede ser negativo."
+                        "El precio debe ser un numero valido no negativo."
                     );
                     break;
                 }
