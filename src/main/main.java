@@ -1,123 +1,438 @@
 package rockBuster;
 
-import excepciones.SinProductoExcepcion;
 import java.util.ArrayList;
-import java.util.List;
+import java.util.Scanner;
 
-public class Saga implements Producto {
+import adaptadores.AdaptadorDiscoAProducto;
+import excepciones.NoExisteProductoExcepcion;
+import filtro.FiltroGenero;
+import filtro.FiltroPrecioMaximo;
+import mixdown.Cancion;
+import mixdown.Disco;
 
-    private String nombre;
-    private String director;
-    private int duracion;
-    private String genero;
-    private String sipnosis;
-    private double renta;
-    private int disponibilidad;
-    private List<Producto> articulos;
+/**
+ * Clase principal del sistema RockBuster.
+ *
+ * Permite consultar el catalogo completo de productos,
+ * filtrar productos por genero y precio maximo,
+ * y consultar la informacion detallada de un producto.
+ *
+ * El sistema utiliza los patrones de diseno
+ * Composite y Adapter.
+ */
+public class Main {
 
-    public Saga(String nombre, String director, String genero, String sipnosis, int disponibilidad) {
-        this.nombre = nombre;
-        this.director = director;
-        this.genero = genero;
-        this.sipnosis = sipnosis;
-        this.disponibilidad = disponibilidad;
-        this.articulos = new ArrayList<>();
+    private Catalogo catalogo;
+    private Scanner scanner;
+
+    /**
+     * Metodo principal que inicia la ejecucion.
+     *
+     * @param args Argumentos de la linea de comandos.
+     */
+    public static void main(String[] args) {
+        Main programa = new Main();
+        programa.iniciar();
     }
 
-    public void agregar(Producto articulo) {
-        if (articulo != null) {
-            this.articulos.add(articulo);
+    /**
+     * Inicializa el catalogo, registra los productos
+     * y ejecuta el menu principal.
+     */
+    public void iniciar() {
+
+        catalogo = new Catalogo();
+        scanner = new Scanner(System.in);
+
+        cargarProductos();
+
+        int opcion;
+
+        do {
+            mostrarMenu();
+            opcion = leerEntero();
+            procesarOpcion(opcion);
+
+        } while (opcion != 0);
+
+        scanner.close();
+    }
+
+    /**
+     * Crea las peliculas, sagas y discos que
+     * forman parte del catalogo de RockBuster.
+     *
+     * Todos los productos se registran en
+     * una unica estructura de datos.
+     */
+    private void cargarProductos() {
+
+        Pelicula episodioI = new Pelicula(
+            "Star Wars Episodio I: La Amenaza Fantasma",
+            "George Lucas",
+            136,
+            "Ciencia ficcion",
+            "Dos Jedi descubren una amenaza para la Republica.",
+            45.00,
+            5
+        );
+
+        Pelicula episodioII = new Pelicula(
+            "Star Wars Episodio II: El Ataque de los Clones",
+            "George Lucas",
+            142,
+            "Ciencia ficcion",
+            "La Republica enfrenta el inicio de las Guerras Clon.",
+            45.00,
+            4
+        );
+
+        Pelicula episodioIII = new Pelicula(
+            "Star Wars Episodio III: La Venganza de los Sith",
+            "George Lucas",
+            140,
+            "Ciencia ficcion",
+            "Anakin Skywalker se acerca al lado oscuro.",
+            50.00,
+            3
+        );
+
+        Pelicula episodioIV = new Pelicula(
+            "Star Wars Episodio IV: Una Nueva Esperanza",
+            "George Lucas",
+            121,
+            "Ciencia ficcion",
+            "Luke Skywalker se une a la Alianza Rebelde.",
+            50.00,
+            5
+        );
+
+        Pelicula episodioV = new Pelicula(
+            "Star Wars Episodio V: El Imperio Contraataca",
+            "Irvin Kershner",
+            124,
+            "Ciencia ficcion",
+            "El Imperio persigue a la Alianza Rebelde.",
+            50.00,
+            4
+        );
+
+        Pelicula episodioVI = new Pelicula(
+            "Star Wars Episodio VI: El Retorno del Jedi",
+            "Richard Marquand",
+            131,
+            "Ciencia ficcion",
+            "Los rebeldes luchan contra el Imperio.",
+            50.00,
+            3
+        );
+
+        Pelicula rogueOne = new Pelicula(
+            "Rogue One: Una Historia de Star Wars",
+            "Gareth Edwards",
+            133,
+            "Ciencia ficcion",
+            "Un grupo rebelde busca los planos de la Estrella de la Muerte.",
+            48.00,
+            4
+        );
+
+        /*
+         * Patron Composite:
+         * Una saga contiene varias peliculas.
+         */
+        Saga precuelas = new Saga(
+            "Saga: Trilogia de Precuelas",
+            "George Lucas",
+            "Ciencia ficcion",
+            "Los origenes de Darth Vader.",
+            3
+        );
+
+        precuelas.agregar(episodioI);
+        precuelas.agregar(episodioII);
+        precuelas.agregar(episodioIII);
+
+        Saga original = new Saga(
+            "Saga: Trilogia Original",
+            "Varios directores",
+            "Ciencia ficcion",
+            "La lucha de la Alianza Rebelde contra el Imperio.",
+            4
+        );
+
+        original.agregar(episodioIV);
+        original.agregar(episodioV);
+        original.agregar(episodioVI);
+
+        /*
+         * Composite anidado:
+         * Una saga contiene otras sagas y peliculas.
+         */
+        Saga coleccionStarWars = new Saga(
+            "Coleccion Star Wars",
+            "Varios directores",
+            "Ciencia ficcion",
+            "Coleccion de peliculas y trilogias de Star Wars.",
+            2
+        );
+
+        coleccionStarWars.agregar(precuelas);
+        coleccionStarWars.agregar(original);
+        coleccionStarWars.agregar(rogueOne);
+
+        /*
+         * Patron Adapter:
+         * Un Disco se adapta a la interfaz Producto.
+         */
+        Cancion[] canciones = {
+            new Cancion(
+                "Come Together",
+                "The Beatles",
+                259
+            ),
+            new Cancion(
+                "Something",
+                "The Beatles",
+                182
+            ),
+            new Cancion(
+                "Here Comes the Sun",
+                "The Beatles",
+                185
+            )
+        };
+
+        Disco disco = new Disco(
+            "Abbey Road",
+            "The Beatles",
+            "Rock",
+            1969,
+            120.00,
+            5,
+            canciones
+        );
+
+        AdaptadorDiscoAProducto discoAdaptado =
+            new AdaptadorDiscoAProducto(disco);
+
+        /*
+         * Registro de todos los productos
+         * en el catalogo unico.
+         */
+        catalogo.agregarProducto(episodioI);
+        catalogo.agregarProducto(episodioII);
+        catalogo.agregarProducto(episodioIII);
+        catalogo.agregarProducto(episodioIV);
+        catalogo.agregarProducto(episodioV);
+        catalogo.agregarProducto(episodioVI);
+        catalogo.agregarProducto(rogueOne);
+        catalogo.agregarProducto(precuelas);
+        catalogo.agregarProducto(original);
+        catalogo.agregarProducto(coleccionStarWars);
+        catalogo.agregarProducto(discoAdaptado);
+    }
+
+    /**
+     * Muestra el menu principal del programa.
+     */
+    public void mostrarMenu() {
+
+        System.out.println();
+        System.out.println("========================================");
+        System.out.println("               ROCKBUSTER               ");
+        System.out.println("========================================");
+        System.out.println("1. Ver catalogo completo");
+        System.out.println("2. Filtrar por genero");
+        System.out.println("3. Filtrar por precio maximo");
+        System.out.println("0. Salir");
+        System.out.println("========================================");
+        System.out.print("Selecciona una opcion: ");
+    }
+
+    /**
+     * Ejecuta la opcion seleccionada por el usuario.
+     *
+     * @param opcion Numero de opcion del menu.
+     */
+    public void procesarOpcion(int opcion) {
+
+        switch (opcion) {
+
+            case 1:
+                System.out.println(
+                    catalogo.mostrarCatalogo()
+                );
+
+                seleccionarProducto(null);
+                break;
+
+            case 2:
+                System.out.print(
+                    "Ingresa el genero: "
+                );
+
+                String genero = scanner.nextLine();
+
+                FiltroGenero filtroGenero =
+                    new FiltroGenero(genero);
+
+                ArrayList<Producto> porGenero =
+                    catalogo.filtrar(filtroGenero);
+
+                System.out.println(
+                    catalogo.mostrarFiltrado(porGenero)
+                );
+
+                seleccionarProducto(porGenero);
+                break;
+
+            case 3:
+                System.out.print(
+                    "Ingresa el precio maximo: "
+                );
+
+                double precio = leerDouble();
+
+                if (precio < 0) {
+                    System.out.println(
+                        "El precio no puede ser negativo."
+                    );
+                    break;
+                }
+
+                FiltroPrecioMaximo filtroPrecio =
+                    new FiltroPrecioMaximo(precio);
+
+                ArrayList<Producto> porPrecio =
+                    catalogo.filtrar(filtroPrecio);
+
+                System.out.println(
+                    catalogo.mostrarFiltrado(porPrecio)
+                );
+
+                seleccionarProducto(porPrecio);
+                break;
+
+            case 0:
+                System.out.println(
+                    "Gracias por utilizar RockBuster."
+                );
+                break;
+
+            default:
+                System.out.println(
+                    "Opcion no valida. Intenta nuevamente."
+                );
+                break;
         }
     }
 
-    public void eliminar(Producto articulo) {
-        this.articulos.remove(articulo);
-    }
+    /**
+     * Permite seleccionar un producto del catalogo
+     * completo o de una lista de productos filtrados.
+     *
+     * @param filtrados Lista de productos filtrados.
+     *                  Si es null, utiliza el catalogo completo.
+     */
+    private void seleccionarProducto(
+        ArrayList<Producto> filtrados
+    ) {
 
-    public Producto[] obtenerArticulos() {
-        return this.articulos.toArray(new Producto[0]);
-    }
+        System.out.println();
+        System.out.println(
+            "Ingresa el numero del producto para consultar sus detalles."
+        );
+        System.out.println(
+            "Ingresa 0 para regresar al menu."
+        );
+        System.out.print("Seleccion: ");
 
-    @Override
-    public String nombre() {
-        return this.nombre;
-    }
+        int seleccion = leerEntero();
 
-    @Override
-    public String director() {
-        return this.director;
-    }
-
-   @Override
-    public int duracion() {
-        int sumaDuracion = 0;
-        for (Producto articulo : this.articulos) {
-            sumaDuracion += articulo.duracion();
+        if (seleccion == 0) {
+            return;
         }
-        return sumaDuracion;
-    }
 
-    @Override
-    public String genero() {
-        return this.genero;
-    }
+        try {
+            Producto producto;
 
-    @Override
-    public String sipnosis() {
-        return this.sipnosis;
-    }
+            if (filtrados == null) {
 
-    @Override
-    public double precio() {
-        double total = 0.0;
-        for (Producto articulo : this.articulos) {
-            total += articulo.precio();
-        }
-        return total * 0.95;
-    }
+                producto =
+                    catalogo.obtenerProducto(seleccion);
 
-    @Override
-    public String presentacion() {
-        StringBuilder sb = new StringBuilder();
-        sb.append("=== Saga: ").append(this.nombre).append(" ===")
-          .append("\nDirector: ").append(this.director)
-          .append("\nGénero: ").append(this.genero)
-          .append("\nDuración total: ").append(duracion()).append(" min")
-          .append("\nPrecio total (con 5% de desc.): $").append(String.format("%.2f", precio()))
-          .append("\nDisponibles: ").append(this.disponibilidad)
-          .append("\nSinopsis: ").append(this.sipnosis)
-          .append("\nArtículos incluidos en la saga:");
+            } else {
 
-        for (Producto articulo : this.articulos) {
-            sb.append("\n  - ").append(articulo.nombre()).append(" ($").append(articulo.precio()).append(")");
-        }
-        return sb.toString();
-    }
+                if (seleccion < 1 ||
+                    seleccion > filtrados.size()) {
 
-    @Override
-    public void rentar() throws SinProductoExcepcion {
-        if (!hayDisponibles()) {
-            throw new SinProductoExcepcion("No hay copias disponibles de la saga: " + this.nombre);
-        }
-        this.disponibilidad--;
-    }
+                    throw new NoExisteProductoExcepcion(
+                        "No existe un producto con ese numero."
+                    );
+                }
 
-    @Override
-    public boolean hayDisponibles() {
-        if (this.disponibilidad > 0) {
-            return true;
-        } else {
-            return false;
+                producto = filtrados.get(seleccion - 1);
+            }
+
+            System.out.println();
+            System.out.println(
+                "===== INFORMACION DEL PRODUCTO ====="
+            );
+
+            System.out.println(
+                producto.presentacion()
+            );
+
+        } catch (NoExisteProductoExcepcion e) {
+
+            System.out.println(
+                "Error: " + e.getMessage()
+            );
         }
     }
 
-    @Override
-    public void devolucion() {
-        this.disponibilidad++;
+    /**
+     * Lee un numero entero ingresado por el usuario.
+     *
+     * @return Numero entero o -1 si la entrada es invalida.
+     */
+    private int leerEntero() {
+
+        try {
+            return Integer.parseInt(
+                scanner.nextLine().trim()
+            );
+
+        } catch (NumberFormatException e) {
+
+            System.out.println(
+                "Error: Debes ingresar un numero entero."
+            );
+
+            return -1;
+        }
     }
 
-    @Override
-    public int disponibles() {
-        return this.disponibilidad;
+    /**
+     * Lee un numero decimal ingresado por el usuario.
+     *
+     * @return Numero decimal o -1 si la entrada es invalida.
+     */
+    private double leerDouble() {
+
+        try {
+            return Double.parseDouble(
+                scanner.nextLine().trim()
+            );
+
+        } catch (NumberFormatException e) {
+
+            System.out.println(
+                "Error: Debes ingresar un precio valido."
+            );
+
+            return -1;
+        }
     }
 }
