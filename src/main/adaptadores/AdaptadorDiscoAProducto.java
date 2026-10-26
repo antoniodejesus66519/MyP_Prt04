@@ -3,88 +3,145 @@ package adaptadores;
 import rockBuster.Producto;
 import mixdown.Disco;
 import excepciones.SinProductoExcepcion;
+import excepciones.SinDiscosExcepcion;
 
 /**
- * Clase AdaptadorDiscoAProducto que implementa la interfaz {@link Producto} y adapta un objeto de tipo {@link Disco} a un objeto de tipo Producto.
- * Esta clase permite que un objeto Disco pueda ser tratado como un objeto Producto, proporcionando métodos para acceder a sus propiedades y comportamientos.
- * AdaptadorDiscoAProducto  tiene la funcionalidad de adaptar un objeto Disco a la interfaz Producto, permitiendo que se 
- * pueda utilizar en contextos donde se espera un objeto Producto como en el catálogo de una tienda que vendan diferentes tipos de productos.
+ * Clase AdaptadorDiscoAProducto que implementa la interfaz
+ * Producto y adapta un objeto de tipo Disco.
+ *
+ * Permite que un Disco pueda ser tratado como un Producto
+ * dentro del catalogo de RockBuster.
+ *
+ * Esta clase implementa el patron de diseno Adapter.
  */
-public class AdaptadorDiscoAProducto implements Producto{
+public class AdaptadorDiscoAProducto implements Producto {
 
-    /*El objeto Disco que se tratará como un objeto Producto. */
+    /* Disco que sera adaptado a la interfaz Producto. */
     private final Disco discoAdaptable;
 
     /**
-     * Constructor que inicializa un objeto AdaptadorDiscoAProducto con un objeto Disco.
-     * @param discoAdaptable El objeto Disco que se adaptará a un objeto Producto.
-     * Este objeto Disco se utilizará para proporcionar la funcionalidad de un objeto Producto.
+     * Constructor que inicializa el adaptador.
+     *
+     * @param discoAdaptable Disco que sera adaptado.
      */
     public AdaptadorDiscoAProducto(Disco discoAdaptable) {
         this.discoAdaptable = discoAdaptable;
     }
 
-    @Override 
-    public String nombre(){
+    /**
+     * Obtiene el nombre del disco.
+     *
+     * @return Nombre del disco.
+     */
+    @Override
+    public String nombre() {
         return discoAdaptable.nombre();
     }
 
-    @Override 
-    public String director(){
+    /**
+     * Obtiene el artista del disco como director.
+     *
+     * @return Nombre del artista.
+     */
+    @Override
+    public String director() {
         return discoAdaptable.artista();
     }
 
-    @Override 
-    public int duracion(){
+    /**
+     * Obtiene la duracion total de las canciones.
+     *
+     * @return Duracion total del disco en segundos.
+     */
+    @Override
+    public int duracion() {
         return discoAdaptable.duracion();
     }
 
-    @Override 
-    public String genero(){
+    /**
+     * Obtiene el genero musical del disco.
+     *
+     * @return Genero del disco.
+     */
+    @Override
+    public String genero() {
         return discoAdaptable.genero();
     }
 
-    @Override 
-    public String sipnosis(){
+    /**
+     * Devuelve un mensaje porque los discos
+     * no cuentan con sinopsis.
+     *
+     * @return Mensaje informativo.
+     */
+    @Override
+    public String sipnosis() {
         return "No hay sipnosis disponible para este producto.";
     }
 
-    @Override 
-    public double precio(){
+    /**
+     * Obtiene el precio de venta del disco.
+     *
+     * @return Precio del disco.
+     */
+    @Override
+    public double precio() {
         return discoAdaptable.precio();
     }
 
-    @Override 
-    public int obtenerId(){
-        return discoAdaptable.obtenerId();
-    }
-
-    @Override 
-    public int disponibles(){
+    /**
+     * Obtiene la cantidad de discos disponibles.
+     *
+     * @return Cantidad de ejemplares disponibles.
+     */
+    @Override
+    public int disponibles() {
         return discoAdaptable.disponibles();
     }
 
-    @Override 
-    public boolean hayDisponibles(){
+    /**
+     * Verifica si existen discos disponibles.
+     *
+     * @return true si hay discos disponibles.
+     */
+    @Override
+    public boolean hayDisponibles() {
         return discoAdaptable.hayDisponibles();
     }
 
-    @Override 
-    public void rentar() throws SinProductosExcepcion{
-        try{
+    /**
+     * Adapta la operacion de renta de Producto
+     * a la operacion de venta de Disco.
+     *
+     * @throws SinProductoExcepcion Si no hay discos disponibles.
+     */
+    @Override
+    public void rentar() throws SinProductoExcepcion {
+        try {
             discoAdaptable.vender();
-        }catch(Sin DiscosExcepcion e){
-            throw new SinProductosExcepcion("No hay productos disponibles para vender.");
+        } catch (SinDiscosExcepcion e) {
+            throw new SinProductoExcepcion(
+                "No hay productos disponibles para vender."
+            );
         }
     }
 
-    @Override 
-    void devolucion(){
+    /**
+     * Adapta la devolucion de Producto
+     * a la operacion de agregar una copia de Disco.
+     */
+    @Override
+    public void devolucion() {
         discoAdaptable.agregarCopia();
     }
 
-    @Override 
-    String presentacion(){
+    /**
+     * Obtiene la presentacion completa del disco.
+     *
+     * @return Informacion del disco.
+     */
+    @Override
+    public String presentacion() {
         return discoAdaptable.presentacion();
     }
 }
