@@ -269,25 +269,38 @@ public class Main {
                 seleccionarProducto(null);
                 break;
 
-            case 2:
-                System.out.print(
-                    "Ingresa el genero: "
-                );
+               case 2:
+    System.out.println();
+    System.out.println("Generos disponibles:");
+    System.out.println("1. Ciencia ficcion");
+    System.out.println("2. Rock");
+    System.out.println();
 
-                String genero = scanner.nextLine();
+    System.out.print("Ingresa el genero: ");
+    String genero = scanner.nextLine().trim();
 
-                FiltroGenero filtroGenero =
-                    new FiltroGenero(genero);
+    if (genero.equalsIgnoreCase("Ciencia ficcion")) {
+        genero = "Ciencia ficcion";
+    } else if (genero.equalsIgnoreCase("Rock")) {
+        genero = "Rock";
+    } else {
+        System.out.println(
+            "El genero ingresado no existe en el catalogo."
+        );
+        return;
+    }
 
-                ArrayList<Producto> porGenero =
-                    catalogo.filtrar(filtroGenero);
+    FiltroGenero filtroGenero =
+        new FiltroGenero(genero);
 
-                System.out.println(
-                    catalogo.mostrarFiltrado(porGenero)
-                );
+    productosFiltrados =
+        catalogo.filtrar(filtroGenero);
 
-                seleccionarProducto(porGenero);
-                break;
+    System.out.println();
+    System.out.println(
+        catalogo.mostrarFiltrado(productosFiltrados)
+    );
+    break; 
 
             case 3:
                 System.out.print(
