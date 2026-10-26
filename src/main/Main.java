@@ -13,13 +13,13 @@ import rockBuster.Saga;
 
 /**
  * Clase principal del sistema RockBuster.
+ * Equipo Los Troyanos
  *
- * Permite consultar el catalogo completo de productos,
- * filtrar productos por genero y precio maximo,
+ * Permite consultar el catalogo completo de productos, filtrar productos por genero y precio maximo,
  * y consultar la informacion detallada de un producto.
  *
- * El sistema utiliza los patrones de diseno
- * Composite y Adapter.
+ * El sistema utiliza los patrones de diseno Composite y Adapter.
+ * 
  */
 public class Main {
 
@@ -37,8 +37,8 @@ public class Main {
     }
 
     /**
-     * Inicializa el catalogo, registra los productos
-     * y ejecuta el menu principal.
+     * Inicializa el catalogo, registra los productos y ejecuta el menu principal
+     * 
      */
     public void iniciar() {
 
@@ -60,11 +60,10 @@ public class Main {
     }
 
     /**
-     * Crea las peliculas, sagas y discos que
-     * forman parte del catalogo de RockBuster.
-     *
-     * Todos los productos se registran en
-     * una unica estructura de datos.
+     * Crea las peliculas, sagas y discos que forman parte del catalogo de RockBuster.
+     * 
+     * Todos los productos se registran en una unica estructura de datos.
+     * 
      */
     private void cargarProductos() {
 
@@ -140,7 +139,7 @@ public class Main {
 
         /*
          * Patron Composite:
-         * Una saga contiene varias peliculas.
+         * Una saga contiene varias peliculas
          */
         Saga precuelas = new Saga(
             "Saga: Trilogia de Precuelas",
@@ -168,7 +167,7 @@ public class Main {
 
         /*
          * Composite anidado:
-         * Una saga contiene otras sagas y peliculas.
+         * Una saga contiene otras sagas y peliculas
          */
         Saga coleccionStarWars = new Saga(
             "Coleccion Star Wars",
@@ -184,7 +183,7 @@ public class Main {
 
         /*
          * Patron Adapter:
-         * Un Disco se adapta a la interfaz Producto.
+         * Un Disco se adapta a la interfaz Producto
          */
         Cancion[] canciones = {
             new Cancion(
@@ -218,8 +217,8 @@ public class Main {
             new AdaptadorDiscoAProducto(disco);
 
         /*
-         * Registro de todos los productos
-         * en el catalogo unico.
+         * Registro de todos los productos en el catalogo unico
+         * 
          */
         catalogo.agregarProducto(episodioI);
         catalogo.agregarProducto(episodioII);
@@ -235,7 +234,7 @@ public class Main {
     }
 
     /**
-     * Muestra el menu principal del programa.
+     * Muestra el menu principal del programa
      */
     public void mostrarMenu() {
 
@@ -345,9 +344,8 @@ public class Main {
     }
 
     /**
-     * Permite seleccionar un producto del catalogo
-     * completo o de una lista de productos filtrados.
-     *
+     * Permite seleccionar un producto del catalogo completo o de una lista de productos filtrados.
+     * 
      * @param filtrados Lista de productos filtrados.
      *                  Si es null, utiliza el catalogo completo.
      */
@@ -433,7 +431,7 @@ public class Main {
     /**
      * Lee un numero decimal ingresado por el usuario.
      *
-     * @return Numero decimal o -1 si la entrada es invalida.
+     * @return Numero decimal o -1 si la entrada es invalida
      */
     private double leerDouble() {
 

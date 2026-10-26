@@ -5,11 +5,11 @@ import filtro.FiltroProducto;
 import java.util.ArrayList;
 
 /**
- * Clase Catalogo que representa un catálogo de productos en la tienda rockBuster.
- * Catalogo es una clase que permite agregar, eliminar y buscar productos en el catálogo, 
- * así como filtrar productos según ciertos criterios. La clase utiliza una lista de objetos
+ * Clase Catalogo que representa un catalogo de productos en la tienda rockBuster.
+ * Catalogo es una clase que permite agregar, eliminar y buscar productos en el catalogo, 
+ * así como filtrar productos segun ciertos criterios. La clase utiliza una lista de objetos
  * que implementan la interfaz {@link Producto} para almacenar los productos disponibles en la tienda.
- * La clase también utiliza la interfaz {@link FiltroProducto} para filtrar los productos según ciertos 
+ * La clase tambien utiliza la interfaz {@link FiltroProducto} para filtrar los productos según ciertos 
  * criterios definidos por el usuario.
  */
 public class Catalogo {
@@ -25,8 +25,8 @@ public class Catalogo {
     }
 
     /**
-     * Agrega un producto al catálogo y le asigna un identificador único.
-     * @param producto El producto de la tienda a agregar al catálogo.
+     * Agrega un producto al catalogo y le asigna un identificador unico.
+     * @param producto El producto de la tienda a agregar al catalogo.
      */
     public void agregarProducto(Producto producto) {
         if (producto != null) {
@@ -35,17 +35,17 @@ public class Catalogo {
     }
 
     /**
-     * Elimina un producto del catálogo.
-     * @param producto El producto a eliminar del catálogo.
+     * Elimina un producto del catalogo.
+     * @param producto El producto a eliminar del catalogo.
      */
     public void eliminarProducto(Producto producto){
         productos.remove(producto);
     }
 
     /**
-     * Obtiene un producto del catálogo según su identificador único.
-     * @param id El identificador único del producto a buscar en el catálogo.
-     * @return El objeto con el identificador único especificado.
+     * Obtiene un producto del catalogo según su identificador unico.
+     * @param id El identificador único del producto a buscar en el catalogo.
+     * @return El objeto con el identificador unico especificado.
      */
 public Producto obtenerProducto(int id) throws NoExisteProductoExcepcion {
     int indice = id - 1;
@@ -57,7 +57,7 @@ public Producto obtenerProducto(int id) throws NoExisteProductoExcepcion {
     throw new NoExisteProductoExcepcion("No existe un producto con el identificador actual.");
 }
     /**
-     * Filtra los productos del catálogo según un criterio definido por el usuario.
+     * Filtra los productos del catalogo según un criterio definido por el usuario.
      * @param filtro El filtro a aplicar sobre los productos.
      * @return Una lista con los productos que cumplen con el criterio.
      */
@@ -82,7 +82,7 @@ public Producto obtenerProducto(int id) throws NoExisteProductoExcepcion {
         String marcoSeparador  = "------------------------------------------------------------------------------\n";
 
         sb.append(marcoEncabezado);
-        sb.append("              [ RESULTADOS DE BÚSQUEDA / PRODUCTOS FILTRADOS ]                 \n");
+        sb.append("              [ RESULTADOS DE BUSQUEDA / PRODUCTOS FILTRADOS ]                 \n");
         sb.append(marcoEncabezado);
         sb.append(String.format(" %-5s | %-48s | %-12s\n", "Nº", "NOMBRE DEL PRODUCTO", "PRECIO"));
         sb.append(marcoSeparador);
@@ -120,7 +120,7 @@ public Producto obtenerProducto(int id) throws NoExisteProductoExcepcion {
         String marcoSeparador  = "------------------------------------------------------------------------------\n";
 
         sb.append(marcoEncabezado);
-        sb.append("                      ROCKBUSTER - CATÁLOGO COMPLETO                          \n");
+        sb.append("                      ROCKBUSTER - CATALOGO COMPLETO                          \n");
         sb.append(marcoEncabezado);
         sb.append(String.format(" %-5s | %-48s | %-12s\n", "Nº", "NOMBRE DEL PRODUCTO", "PRECIO"));
         sb.append(marcoSeparador);

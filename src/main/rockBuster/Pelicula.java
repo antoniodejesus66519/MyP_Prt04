@@ -2,6 +2,13 @@ package rockBuster;
 
 import excepciones.SinProductoExcepcion;
 
+/**
+ * Representa una pelicula individual dentro del catalogo de RockBuster
+ * 
+ * Actua como un nodo hoja dentro del patrón Composite
+ * representando un producto elemental que no contiene otros componentes hijos
+ */
+
 public class Pelicula implements Producto {
 
     private String nombre;
@@ -12,6 +19,17 @@ public class Pelicula implements Producto {
     private double renta;
     private int disponibilidad;
 
+    /**
+     * COntructor de una Pelicula con sus atributos
+     * 
+     * @param nombre Titulo de la película
+     * @param director Director de la obra
+     * @param duracion Duración en minutos
+     * @param genero Genero cinematográfico
+     * @param sipnosis Resumen o sinopsis del argumento
+     * @param renta Costo de renta
+     * @param disponibilidad Cantidad de copias iniciales
+     */
     public Pelicula(String nombre, String director, int duracion, String genero, String sipnosis, double renta, int disponibilidad) {
         this.nombre = nombre;
         this.director = director;
@@ -56,7 +74,7 @@ public class Pelicula implements Producto {
     public String presentacion() {
         return "=== Película: " + this.nombre + " ===" +
                "\nDirector: " + this.director +
-               "\nGénero: " + this.genero +
+               "\nGenero: " + this.genero +
                "\nDuración: " + this.duracion + " min" +
                "\nPrecio de renta: $" + this.renta +
                "\nDisponibles: " + this.disponibilidad +
@@ -66,7 +84,7 @@ public class Pelicula implements Producto {
     @Override
     public void rentar() throws SinProductoExcepcion {
         if (!hayDisponibles()) {
-            throw new SinProductoExcepcion("No hay copias disponibles de la película: " + this.nombre);
+            throw new SinProductoExcepcion("No hay copias disponibles de la pelicula: " + this.nombre);
         }
         this.disponibilidad--;
     }
